@@ -1,5 +1,6 @@
 from flask import Flask, request, send_file
 from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -18,7 +19,12 @@ def home():
     imageText = "Your IP: {userIp}"
     image = createImageWithText(imageText)
 
-    return image
+    # Save image to a bytes buffer
+    img_io = BytesIO()
+    image.save(img_io, 'JPEG')
+    img_io.seek(0)
+
+    return send_file(img_io, mimeType="image/jpeg")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
