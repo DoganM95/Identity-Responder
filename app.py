@@ -18,11 +18,8 @@ def createImageWithText(text, imageSize=(300, 200), fontSize=20):
         font = ImageFont.load_default()
         print("Default font loaded.")
     
-    # Measure text size with the specified font
-    textWidth, textHeight = draw.textsize(text, font=font)
-    
     # Calculate position to center the text
-    position = ((imageSize[0] - textWidth) / 2, (imageSize[1] - textHeight) / 2)
+    position = ((imageSize[0]) / 2, (imageSize[1]) / 2)
     
     # Draw the text on the image
     draw.text(position, text, fill="white", font=font)
