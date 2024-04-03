@@ -10,9 +10,9 @@ def createImageWithText(text, imageSize=(1000, 500)):
     try:
         font = ImageFont.truetype("arial.ttf")
     except IOError:
-        font = ImageFont.load_default()
+        font = ImageFont.load_default(11)
         print("Default font loaded.")
-    position = ((imageSize[0]) / 2, (imageSize[1]) / 2)
+    position = (20, 20)
     draw.text(position, text, fill="white", font=font)
     
     return image
