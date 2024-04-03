@@ -5,30 +5,47 @@ from io import BytesIO
 app = Flask(__name__)
 
 def createImageWithText(text, imageSize=(300, 200), fontSize=20):
-    image = Image.new('RGB', imageSize, color='black')  # RGB image with 300x200 and background color black
-    draw = ImageDraw.Draw(image)  # Create the drawable image
+    # Create a blank image
+    image = Image.new('RGB', imageSize, color='black')
+    # Create a drawing context
+    draw = ImageDraw.Draw(image)
+    
+    # Attempt to use a specific font
     try:
-        font = ImageFont.truetype("arial.ttf", fontSize)  # Attempt to set font details
+        font = ImageFont.truetype("arial.ttf", fontSize)
     except IOError:
+        # If specific font is not found, use the default font
         font = ImageFont.load_default()
         print("Default font loaded.")
-    textWidth, textHeight = draw.textsize(text, font=font)  # Measure text size
-    position = ((imageSize[0] - textWidth) / 2, (imageSize[1] - textHeight) / 2)  # Center text
-    draw.text(position, text, fill="white", font=font)  # Add white text on black background
+    
+    # Measure text size with the specified font
+    textWidth, textHeight = draw.textsize(text, font=font)
+    
+    # Calculate position to center the text
+    position = ((imageSize[0] - textWidth) / 2, (imageSize[1] - textHeight) / 2)
+    
+    # Draw the text on the image
+    draw.text(position, text, fill="white", font=font)
+    
     return image
 
 @app.route("/")
 def home():
-    userIp = request.remote_addr  # Correct variable name to match the format string
-    imageText = f"Your IP: {userIp}"  # Use formatted string literal to include user IP
+    # Get the user's IP address
+    userIp = request.remote_addr
+    imageText = f"Your IP: {userIp}"
+    
+    # Create an image with the IP address text
     image = createImageWithText(imageText)
-
-    # Save image to a bytes buffer
+    
+    # Prepare the image for sending by saving to a BytesIO buffer
     img_io = BytesIO()
-    image.save(img_io, 'JPEG', quality=70)  # Specify JPEG quality (optional)
+    image.save(img_io, 'JPEG', quality=70)
     img_io.seek(0)
-
-    return send_file(img_io, mimetype="image/jpeg")
+    
+    # Send the image as a response
+    return send_file(img_io, mimetype='image/jpeg')
 
 if __name__ == "__main__":
+    # Run the Flask app
     app.run(host='0.0.0.0', port=8080)
