@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY ./app.py app.py
 
 # Install dependencies
-RUN pip install --no-cache-dir Flask
+RUN pip install --no-cache-dir Flask Pillow
 
 # Expose the app port
 EXPOSE 8080
