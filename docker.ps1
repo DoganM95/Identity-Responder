@@ -1,3 +1,6 @@
+# Stop and remove any running image response cotainer
+docker ps -a | Select-String "image" | ForEach-Object { docker rm -f $_.ToString().Split(" ")[0] }
+
 # Build the image
 docker build -t ip-image-server .
 
