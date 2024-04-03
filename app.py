@@ -4,7 +4,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 
-def createImageWithText(text, imageSize=(300, 200), fontSize=20):
+def createImageWithText(text, imageSize=(1000, 500)):
     # Create a blank image
     image = Image.new('RGB', imageSize, color='black')
     # Create a drawing context
@@ -12,7 +12,7 @@ def createImageWithText(text, imageSize=(300, 200), fontSize=20):
     
     # Attempt to use a specific font
     try:
-        font = ImageFont.truetype("arial.ttf", fontSize)
+        font = ImageFont.truetype("arial.ttf")
     except IOError:
         # If specific font is not found, use the default font
         font = ImageFont.load_default()
