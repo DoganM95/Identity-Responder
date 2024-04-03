@@ -8,4 +8,7 @@ docker image prune -f
 docker build -t ip-image-server .
 
 # Run a container
-docker run -p 4000:8080 ip-image-server
+docker run `
+    -e "IPINFO_ACCESS_TOKEN=tokenGoesHere" `
+    -p 4000:4000 `
+    ip-image-server
