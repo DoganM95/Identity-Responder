@@ -10,7 +10,7 @@ COPY ./app.py app.py
 RUN pip install --no-cache-dir Flask Pillow requests
 
 # Expose the app port
-EXPOSE 8080
+EXPOSE 4000
 
 # Execute the app
 CMD ["python", "app.py"]
