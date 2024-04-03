@@ -4,6 +4,7 @@ A server that responds to clients with a picture, showing their identity like IP
 ## Setup 
 
 - Get a linux machine ready to serve the container
+- Create an account at [ipinfo.io](https://ipinfo.io/) and get your access token
 - Start the container using  
   ```shell
   docker run \
