@@ -43,6 +43,7 @@ def home():
         f"Remote Addr: {request.remote_addr}",
         f"User Agent: {request.user_agent.string}",
         *location_info,
+        f"Real IP: {request.headers.get('X-Forwarded-For', request.remote_addr)}"
     ]
     imageText = "\n".join(request_data)
     
@@ -59,4 +60,4 @@ def home():
 
 if __name__ == "__main__":
     # Run the Flask app
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=4000)
