@@ -5,23 +5,14 @@ from io import BytesIO
 app = Flask(__name__)
 
 def createImageWithText(text, imageSize=(1000, 500)):
-    # Create a blank image
     image = Image.new('RGB', imageSize, color='black')
-    # Create a drawing context
     draw = ImageDraw.Draw(image)
-    
-    # Attempt to use a specific font
     try:
         font = ImageFont.truetype("arial.ttf")
     except IOError:
-        # If specific font is not found, use the default font
         font = ImageFont.load_default()
         print("Default font loaded.")
-    
-    # Calculate position to center the text
     position = ((imageSize[0]) / 2, (imageSize[1]) / 2)
-    
-    # Draw the text on the image
     draw.text(position, text, fill="white", font=font)
     
     return image
