@@ -1,8 +1,20 @@
 from flask import Flask, request, send_file
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+import requests
+import os
 
 app = Flask(__name__)
+
+IPINFO_ACCESS_TOKEN = os.getenv('IPINFO_ACCESS_TOKEN')
+
+def getClientAddressData(ipAddress):
+    try:
+        response = requests.get(f'https://ipinfo.io/{ipAddress}/json?token={IPINFO_ACCESS_TOKEN}')
+        ipInfo = response.json()
+    except requests.RequestException:
+        ipInfo = "Error fetching address info"
+    return ipInfo
 
 def createImageWithText(text, imageSize=(1000, 500)):
     image = Image.new('RGB', imageSize, color='black')
@@ -19,9 +31,20 @@ def createImageWithText(text, imageSize=(1000, 500)):
 
 @app.route("/")
 def home():
-    # Get the user's IP address
-    userIp = request.remote_addr
-    imageText = f"Your IP: {userIp}"
+    location_info = [f"{key.capitalize()}: {value}" for key, value in getClientAddressData(request.remote_addr).items()]
+    request_data = [
+        f"Method: {request.method}",
+        f"URL: {request.url}",
+        "Headers:",
+        *[f"{key}: {value}" for key, value in request.headers.items()],
+        "Args:",
+        *[f"{key}: {value}" for key, value in request.args.items()],
+        # Include additional sections for Form, Data, Json, Cookies as needed
+        f"Remote Addr: {request.remote_addr}",
+        f"User Agent: {request.user_agent.string}",
+        *location_info,
+    ]
+    imageText = "\n".join(request_data)
     
     # Create an image with the IP address text
     image = createImageWithText(imageText)
